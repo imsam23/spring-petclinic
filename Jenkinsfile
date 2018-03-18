@@ -1,4 +1,17 @@
-FROM anapsix/alpine-java
-LABEL maintainer="shanem@liatrio.com"
-COPY /target/spring-petclinic-1.5.1.jar /home/spring-petclinic-1.5.1.jar
-CMD ["java","-jar","/home/spring-petclinic-1.5.1.jar"]
+#!groovy
+
+pipeline {
+  agent none
+  stages {
+    stage('Maven Install') {
+      agent {
+        docker {
+          image 'maven:3.5.0'
+        }
+      }
+      steps {
+        sh 'mvn clean install'
+      }
+    } 
+  }
+}
